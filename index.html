@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MUNSoc Role Sorter</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Background -->
+
+    <div class="background-overlay"></div>
+    <div class="particles"></div>
+
+    <!-- MAIN CONTAINER -->
+
+    <main class="container">
+
+        <!-- ==========================
+                LANDING PAGE
+        =========================== -->
+
+        <section id="landing" class="screen active">
+
+            <h2 class="small-title">
+                MUNSoc Presents
+            </h2>
+
+            <h1 class="main-title">
+                THE ROLE SORTER
+            </h1>
+
+            <p class="quote">
+                "Every great delegate has a place.<br>
+                The question is... where do you belong?"
+            </p>
+
+            <button id="beginBtn" class="gold-btn">
+                Begin
+            </button>
+
+        </section>
+
+
+        <!-- ==========================
+                INTRO
+        =========================== -->
+
+        <section id="intro" class="screen hidden">
+
+            <img
+                src="assets/hat.png"
+                class="hat"
+                alt="Role Sorter Hat"
+            >
+
+            <div class="speech-box">
+
+                <p id="introText"></p>
+
+            </div>
+
+            <button id="continueIntro" class="gold-btn hidden">
+                Continue
+            </button>
+
+        </section>
+
+
+
+        <!-- ==========================
+                NAME
+        =========================== -->
+
+        <section id="nameScreen" class="screen hidden">
+
+            <h2>
+                Before we begin...
+            </h2>
+
+            <p>
+                Tell me your name, young delegate.
+            </p>
+
+            <input
+                id="userName"
+                type="text"
+                maxlength="40"
+                placeholder="Your Name"
+            >
+
+            <button
+                id="startQuiz"
+                class="gold-btn"
+            >
+                Continue
+            </button>
+
+        </section>
+
+
+
+        <!-- ==========================
+                QUIZ
+        =========================== -->
+
+        <section id="quizScreen" class="screen hidden">
+
+            <div class="progress-container">
+
+                <div id="progressBar"></div>
+
+            </div>
+
+            <p class="question-number">
+                Question
+                <span id="currentQuestion">
+                    1
+                </span>
+                /
+                10
+            </p>
+
+            <h2 id="questionText">
+                Question goes here
+            </h2>
+
+            <div
+                id="optionsContainer"
+                class="options-container">
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==========================
+            THINKING
+        =========================== -->
+
+        <section id="thinkingScreen" class="screen hidden">
+
+            <img
+                src="assets/hat.png"
+                class="hat thinking"
+                alt="Thinking Hat"
+            >
+
+            <h2>
+                The Hat is Thinking...
+            </h2>
+
+            <p id="thinkingText">
+
+                Hmm...
+
+            </p>
+
+            <div class="loader">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+        </section>
+
+
+
+        <!-- ==========================
+                RESULT
+        =========================== -->
+
+        <section id="resultScreen" class="screen hidden">
+
+    <h3 id="chosenTitle" class="hidden">
+        THE HAT HAS CHOSEN...
+    </h3>
+
+    <div id="houseReveal" class="hidden">
+
+        <h1 id="departmentName"></h1>
+
+        <h2 id="departmentSubtitle"></h2>
+
+    </div>
+
+    <div id="resultCard" class="result-card hidden">
+
+        <p id="departmentDescription"></p>
+
+        <h4>Your Strengths</h4>
+
+        <ul id="traitsList"></ul>
+
+        <div class="wax-seal">
+            Welcome to MUNSoc
+        </div>
+
+    </div>
+
+    <button
+        id="restartBtn"
+        class="gold-btn hidden">
+        Sort Again
+    </button>
+
+</section>
+
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
