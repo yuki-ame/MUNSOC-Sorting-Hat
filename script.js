@@ -130,8 +130,8 @@ const departments = {
         ]
     },
     delegate: {
-        title: "R&D",
-        subtitle: "Delegate Affairs",
+        title: "The Circle of Diplomats",
+        subtitle: "R&D",
         description: "You create meaningful connections and make people feel included. Conferences thrive because of people like you.",
         traits: [
             "Approachable",
