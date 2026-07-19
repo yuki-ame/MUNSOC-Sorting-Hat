@@ -55,7 +55,9 @@ const scores = {
     hospitality: 0,
     operations: 0,
     documentation: 0,
-    delegate: 0
+    delegate: 0,
+    bdm: 0,
+    ihc: 0
 };
 
 // ======================================================
@@ -76,7 +78,7 @@ const departments = {
     },
     tech: {
         title: "The Keepers of Systems",
-        subtitle: "Technology",
+        subtitle: "Technical Team",
         description: "Behind every seamless event is someone quietly making everything work. You thrive on solving problems before anyone notices them.",
         traits: [
             "Logical thinker",
@@ -87,7 +89,7 @@ const departments = {
     },
     creative: {
         title: "The Artisans of Vision",
-        subtitle: "Content & Design",
+        subtitle: "Creatives",
         description: "You believe ideas deserve beautiful execution. You enjoy turning concepts into visuals that people remember.",
         traits: [
             "Creative",
@@ -109,7 +111,7 @@ const departments = {
     },
     operations: {
         title: "The Architects of Order",
-        subtitle: "Logistics",
+        subtitle: "Operations",
         description: "While others see chaos, you see a checklist. You enjoy making ambitious plans actually happen.",
         traits: [
             "Organised",
@@ -120,7 +122,7 @@ const departments = {
     },
     documentation: {
         title: "The Chroniclers",
-        subtitle: "Editorials & Media",
+        subtitle: "Documentation",
         description: "Every unforgettable moment deserves to be preserved. You have an eye for capturing stories others miss.",
         traits: [
             "Observant",
@@ -131,13 +133,35 @@ const departments = {
     },
     delegate: {
         title: "The Circle of Diplomats",
-        subtitle: "R&D",
+        subtitle: "Delegate Affairs",
         description: "You create meaningful connections and make people feel included. Conferences thrive because of people like you.",
         traits: [
             "Approachable",
             "Supportive",
             "Diplomatic",
             "Good listener"
+        ]
+    },
+    bdm: {
+        title: "The Forgers of Alliances",
+        subtitle: "Business Development & Marketing",
+        description: "You see opportunity where others see a closed door. Partnerships, sponsors, and collaborations happen because you know how to make people believe in an idea enough to invest in it.",
+        traits: [
+            "Persuasive negotiator",
+            "Strategic thinker",
+            "Relationship builder",
+            "Growth-minded"
+        ]
+    },
+    ihc: {
+        title: "The Forge of Content",
+        subtitle: "Inhouse Creatives",
+        description: "You turn ideas into content that stops the scroll. Posters, reels, and graphics come together fast under your hands, and a tight deadline only sharpens your focus.",
+        traits: [
+            "Design-savvy",
+            "Fast turnaround",
+            "Trend-aware",
+            "Consistent output"
         ]
     }
 };
@@ -162,11 +186,6 @@ const thinkingMessages = [
 // ======================================================
 // RANDOM THINKING MESSAGES
 // ======================================================
-// Picks a fresh set of `count` messages (no repeats within
-// the set) every time someone finishes the quiz, so the
-// same three lines don't show up for every person. Only
-// messages that have a recorded clip are eligible, so the
-// hat never goes silent mid-sequence.
 
 function getRandomThinkingMessages(count) {
     const available = thinkingMessages.filter(m => m.file);
@@ -177,11 +196,6 @@ function getRandomThinkingMessages(count) {
 // ======================================================
 // HAT VOICE (custom audio clips only)
 // ======================================================
-// Clips live in Assets/audio/<exact file name>.mp3.
-// speakHat(fileName, text, onDone) plays that clip. If
-// voice is muted, or a clip is missing/fails to load, it
-// just waits briefly and moves on -- no synthesized
-// browser voice is used.
 
 let voiceEnabled = true;
 let currentAudioClip = null;
@@ -233,35 +247,35 @@ const questions = [
     {
         question: "It's day one of a big event. Where are you?",
         options: [
-            { text: "Talking to someone I just met and somehow ending up in a 20-minute conversation", scores: { pr: 3, delegate: 2, hospitality: 1 } },
+            { text: "Talking to someone I just met and somehow ending up in a 20-minute conversation", scores: { pr: 3, delegate: 2, hospitality: 1, bdm: 2 } },
             { text: "Checking whether everything is running according to plan", scores: { operations: 3, tech: 2, hospitality: 1 } },
-            { text: "Adjusting small details that most people wouldn't notice", scores: { creative: 3, documentation: 2, operations: 1 } },
+            { text: "Adjusting small details that most people wouldn't notice", scores: { creative: 3, documentation: 2, operations: 1, ihc: 2 } },
             { text: "Figuring out where the best spot in the venue is and settling there", scores: { hospitality: 2, delegate: 2, pr: 1 } }
         ]
     },
     {
         question: "Your friend group comes to you when they need...",
         options: [
-            { text: "Energy and motivation", scores: { pr: 3, delegate: 2 } },
+            { text: "Energy and motivation", scores: { pr: 3, delegate: 2, bdm: 2 } },
             { text: "The right words", scores: { pr: 2, documentation: 2, delegate: 1 } },
             { text: "A practical solution", scores: { operations: 3, tech: 2 } },
-            { text: "A fresh perspective", scores: { creative: 3, documentation: 2 } }
+            { text: "A fresh perspective", scores: { creative: 3, documentation: 2, ihc: 2 } }
         ]
     },
     {
         question: "Pick a Friday night.",
         options: [
-            { text: "Meeting new people", scores: { pr: 3, delegate: 2 } },
+            { text: "Meeting new people", scores: { pr: 3, delegate: 2, bdm: 2 } },
             { text: "Learning something random for hours", scores: { tech: 3, documentation: 2 } },
-            { text: "Working on a personal project", scores: { creative: 3, tech: 1 } },
+            { text: "Working on a personal project", scores: { creative: 3, tech: 1, ihc: 2 } },
             { text: "Spending time with a close group of friends", scores: { hospitality: 3, delegate: 2 } }
         ]
     },
     {
         question: "What's your biggest flex?",
         options: [
-            { text: "People remember me after one conversation", scores: { pr: 3, delegate: 2 } },
-            { text: "I notice details others miss", scores: { documentation: 3, creative: 2 } },
+            { text: "People remember me after one conversation", scores: { pr: 3, delegate: 2, bdm: 2 } },
+            { text: "I notice details others miss", scores: { documentation: 3, creative: 2, ihc: 2 } },
             { text: "I can turn an idea into something real", scores: { operations: 2, creative: 2, tech: 1 } },
             { text: "I stay calm when things get messy", scores: { operations: 3, hospitality: 2 } }
         ]
@@ -270,34 +284,34 @@ const questions = [
         question: "Someone messes up the plan last minute. You:",
         options: [
             { text: "Switch to an alternative without making a big deal out of it", scores: { operations: 3, hospitality: 1 } },
-            { text: "Start contacting the right people immediately", scores: { pr: 3, delegate: 2 } },
-            { text: "Adapt the situation so it still feels intentional", scores: { creative: 3, documentation: 2 } },
+            { text: "Start contacting the right people immediately", scores: { pr: 3, delegate: 2, bdm: 2 } },
+            { text: "Adapt the situation so it still feels intentional", scores: { creative: 3, documentation: 2, ihc: 2 } },
             { text: "Keep the group focused so nobody spirals", scores: { hospitality: 3, operations: 2 } }
         ]
     },
     {
         question: "Pick your villain arc:",
         options: [
-            { text: "Becomes everyone's favorite contact", scores: { pr: 3, delegate: 2 } },
+            { text: "Becomes everyone's favorite contact", scores: { pr: 3, delegate: 2, bdm: 2 } },
             { text: "Creates a system that makes everyone else look unprepared", scores: { tech: 3, operations: 2 } },
-            { text: "Rebrands everything and somehow makes it cooler", scores: { creative: 3, documentation: 1 } },
+            { text: "Rebrands everything and somehow makes it cooler", scores: { creative: 3, documentation: 1, ihc: 2 } },
             { text: "Runs things so efficiently people forget chaos ever existed", scores: { operations: 3, hospitality: 1 } }
         ]
     },
     {
         question: "What does your notes app look like?",
         options: [
-            { text: "Neat and visually satisfying", scores: { creative: 3, documentation: 2 } },
+            { text: "Neat and visually satisfying", scores: { creative: 3, documentation: 2, ihc: 2 } },
             { text: "A collection of half-finished thoughts", scores: { creative: 2, tech: 1 } },
             { text: "Structured enough to survive an audit", scores: { operations: 3, tech: 2 } },
-            { text: "Mostly reminders and quick ideas", scores: { hospitality: 2, delegate: 2 } }
+            { text: "Mostly reminders and quick ideas", scores: { hospitality: 2, delegate: 2, bdm: 1 } }
         ]
     },
     {
         question: "You're at a MUN conference as a delegate. You're known for:",
         options: [
-            { text: "Knowing people across committees", scores: { delegate: 3, pr: 2 } },
-            { text: "Proposing unexpected solutions", scores: { tech: 3, operations: 1 } },
+            { text: "Knowing people across committees", scores: { delegate: 3, pr: 2, bdm: 2 } },
+            { text: "Proposing unexpected solutions", scores: { tech: 3, operations: 1, ihc: 1 } },
             { text: "Looking unusually prepared", scores: { operations: 3, documentation: 2 } },
             { text: "Helping discussions move forward", scores: { hospitality: 2, delegate: 3 } }
         ]
@@ -305,9 +319,9 @@ const questions = [
     {
         question: "Ideal superpower:",
         options: [
-            { text: "Make people instantly trust me", scores: { pr: 3, delegate: 2 } },
+            { text: "Make people instantly trust me", scores: { pr: 3, delegate: 2, bdm: 2 } },
             { text: "Know exactly what's happening", scores: { operations: 3, tech: 2 } },
-            { text: "Make things look effortlessly polished", scores: { creative: 3, documentation: 2 } },
+            { text: "Make things look effortlessly polished", scores: { creative: 3, documentation: 2, ihc: 2 } },
             { text: "Build useful things on demand", scores: { tech: 3, operations: 2 } }
         ]
     },
@@ -315,8 +329,8 @@ const questions = [
         question: "It's 2AM the night before the event. You are:",
         options: [
             { text: "Double-checking whether everything will actually work tomorrow", scores: { operations: 3, tech: 2 } },
-            { text: "Making sure people are still committed", scores: { pr: 3, delegate: 2 } },
-            { text: "Fixing tiny imperfections that only you can see", scores: { creative: 3, documentation: 2 } },
+            { text: "Making sure people are still committed", scores: { pr: 3, delegate: 2, bdm: 2 } },
+            { text: "Fixing tiny imperfections that only you can see", scores: { creative: 3, documentation: 2, ihc: 2 } },
             { text: "Reviewing every possible point of failure", scores: { operations: 3, hospitality: 2 } }
         ]
     }
