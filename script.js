@@ -16,6 +16,7 @@ const beginBtn = document.getElementById("beginBtn");
 const continueIntro = document.getElementById("continueIntro");
 const startQuiz = document.getElementById("startQuiz");
 const restartBtn = document.getElementById("restartBtn");
+const voiceToggle = document.getElementById("voiceToggle");
 
 // ---------- Quiz Elements ----------
 const introText = document.getElementById("introText");
@@ -146,17 +147,83 @@ const departments = {
 // ======================================================
 
 const thinkingMessages = [
-    "Analyzing your choices...",
-    "Interesting...",
-    "You don't follow the crowd...",
-    "Responsibility doesn't scare you...",
-    "I sense ambition...",
-    "There's more to you than meets the eye...",
-    "You value precision...",
-    "Almost there...",
-    "One place calls to you...",
-    "I know exactly where you belong..."
+    { file: null, text: "Analyzing your choices..." },
+    { file: "Interesting.mp3", text: "Interesting..." },
+    { file: "you dont follow the crowd.mp3", text: "You don't follow the crowd..." },
+    { file: "responsibilty doesnt scare you.mp3", text: "Responsibility doesn't scare you..." },
+    { file: "i sense ambition.mp3", text: "I sense ambition..." },
+    { file: "theres more to you than meet the eye.mp3", text: "There's more to you than meets the eye..." },
+    { file: "you value precision.mp3", text: "You value precision..." },
+    { file: "almost there.mp3", text: "Almost there..." },
+    { file: "one place calls to you.mp3", text: "One place calls to you..." },
+    { file: "I know exactly where you belong.mp3", text: "I know exactly where you belong..." }
 ];
+
+// ======================================================
+// RANDOM THINKING MESSAGES
+// ======================================================
+// Picks a fresh set of `count` messages (no repeats within
+// the set) every time someone finishes the quiz, so the
+// same three lines don't show up for every person. Only
+// messages that have a recorded clip are eligible, so the
+// hat never goes silent mid-sequence.
+
+function getRandomThinkingMessages(count) {
+    const available = thinkingMessages.filter(m => m.file);
+    const shuffled = [...available].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, count);
+}
+
+// ======================================================
+// HAT VOICE (custom audio clips only)
+// ======================================================
+// Clips live in Assets/audio/<exact file name>.mp3.
+// speakHat(fileName, text, onDone) plays that clip. If
+// voice is muted, or a clip is missing/fails to load, it
+// just waits briefly and moves on -- no synthesized
+// browser voice is used.
+
+let voiceEnabled = true;
+let currentAudioClip = null;
+
+function stopHatVoice() {
+    if (currentAudioClip) {
+        currentAudioClip.pause();
+        currentAudioClip = null;
+    }
+}
+
+function speakHat(fileName, text, onDone) {
+    if (!voiceEnabled || !fileName) {
+        if (onDone) setTimeout(onDone, 1100);
+        return;
+    }
+
+    stopHatVoice();
+
+    const clip = new Audio(`Assets/audio/${encodeURIComponent(fileName)}`);
+    currentAudioClip = clip;
+
+    clip.onended = () => { if (onDone) onDone(); };
+    clip.onerror = () => {
+        console.warn(`Missing audio clip: Assets/audio/${fileName}`);
+        if (onDone) setTimeout(onDone, 1100);
+    };
+
+    clip.play().catch(() => {
+        if (onDone) setTimeout(onDone, 1100);
+    });
+}
+
+if (voiceToggle) {
+    voiceToggle.addEventListener("click", () => {
+        voiceEnabled = !voiceEnabled;
+        voiceToggle.textContent = voiceEnabled ? "🔊" : "🔇";
+        voiceToggle.classList.toggle("muted", !voiceEnabled);
+
+        if (!voiceEnabled) stopHatVoice();
+    });
+}
 
 // ======================================================
 // QUESTIONS
@@ -296,12 +363,14 @@ function showScreen(screen) {
 
 beginBtn.addEventListener("click", () => {
     showScreen(intro);
+    speakHat("Intro.mp3", "Another aspiring delegate. Answer honestly. Trust the Hat. It already knows more than you think.");
     setTimeout(() => {
         continueIntro.classList.remove("hidden");
     }, 600);
 });
 
 continueIntro.addEventListener("click", () => {
+    stopHatVoice();
     showScreen(nameScreen);
 });
 
@@ -372,17 +441,14 @@ function selectAnswer(option) {
 // THINKING SCREEN
 // ======================================================
 
-let thinkingInterval;
-
 function beginThinking() {
     showScreen(thinkingScreen);
-    let index = 0;
-    thinkingText.textContent = thinkingMessages[0];
 
-    thinkingInterval = setInterval(() => {
-        index++;
-        if (index >= thinkingMessages.length) {
-            clearInterval(thinkingInterval);
+    const messages = getRandomThinkingMessages(3);
+    let index = 0;
+
+    function playNext() {
+        if (index >= messages.length) {
             revealResult();
             return;
         }
@@ -390,10 +456,17 @@ function beginThinking() {
         thinkingText.style.opacity = 0;
 
         setTimeout(() => {
-            thinkingText.textContent = thinkingMessages[index];
+            thinkingText.textContent = messages[index].text;
             thinkingText.style.opacity = 1;
+
+            speakHat(messages[index].file, messages[index].text, () => {
+                index++;
+                setTimeout(playNext, 350);
+            });
         }, 250);
-    }, 1400);
+    }
+
+    playNext();
 }
 
 // ======================================================
@@ -488,6 +561,7 @@ function submitToGoogleForm(resultTitle) {
 // ------------------------------------------------------
 
 restartBtn.addEventListener("click", () => {
+    stopHatVoice();
     currentQuestionIndex = 0;
     selectedAnswers = [];
     userName = "";
