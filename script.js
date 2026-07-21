@@ -78,7 +78,7 @@ const departments = {
     },
     tech: {
         title: "The Keepers of Systems",
-        subtitle: "Technical Team",
+        subtitle: "Technology",
         description: "Behind every seamless event is someone quietly making everything work. You thrive on solving problems before anyone notices them.",
         traits: [
             "Logical thinker",
@@ -89,7 +89,7 @@ const departments = {
     },
     creative: {
         title: "The Artisans of Vision",
-        subtitle: "Creatives",
+        subtitle: "Content & Design",
         description: "You believe ideas deserve beautiful execution. You enjoy turning concepts into visuals that people remember.",
         traits: [
             "Creative",
@@ -111,7 +111,7 @@ const departments = {
     },
     operations: {
         title: "The Architects of Order",
-        subtitle: "Operations",
+        subtitle: "Logistics",
         description: "While others see chaos, you see a checklist. You enjoy making ambitious plans actually happen.",
         traits: [
             "Organised",
@@ -122,7 +122,7 @@ const departments = {
     },
     documentation: {
         title: "The Chroniclers",
-        subtitle: "Documentation",
+        subtitle: "Editorial & Media",
         description: "Every unforgettable moment deserves to be preserved. You have an eye for capturing stories others miss.",
         traits: [
             "Observant",
@@ -133,7 +133,7 @@ const departments = {
     },
     delegate: {
         title: "The Circle of Diplomats",
-        subtitle: "Delegate Affairs",
+        subtitle: "R&D",
         description: "You create meaningful connections and make people feel included. Conferences thrive because of people like you.",
         traits: [
             "Approachable",
@@ -504,13 +504,8 @@ function revealResult() {
 
     const result = departments[winningDepartment];
 
-    departmentName.innerHTML = `
-        ${result.title}
-        <br>
-        <span style="font-size:1.2rem;font-family:'Cormorant Garamond', serif;color:#d9c28a;">
-            ${result.subtitle}
-        </span>
-    `;
+    departmentName.textContent = result.title;
+    departmentSubtitle.textContent = result.subtitle;
 
     departmentDescription.textContent = result.description;
     traitsList.innerHTML = "";
